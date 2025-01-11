@@ -1,6 +1,7 @@
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import java.security.SecureRandom;
 
 import org.apache.commons.codec.binary.Hex;
 
@@ -14,7 +15,12 @@ import org.apache.commons.codec.binary.Hex;
 public class PasswordHashing {
   private static final int ITERATIONS = 10000;
   private static final int KEY_LENGTH = 512;
-  private static final String SALT = "saltKey";
+  private static final byte[] SALT = new byte[128];
+
+  public PasswordHashing() {
+    SecureRandom secureRandom = new SecureRandom();
+    secureRandom.nextBytes(SALT);
+  }
 
   /**
    * Converts a provided password into a hashed representation.
@@ -36,7 +42,7 @@ public class PasswordHashing {
   private byte[] hashPassword(final char[] password) {
     try {
       SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
-      PBEKeySpec spec = new PBEKeySpec(password, SALT.getBytes(), ITERATIONS, KEY_LENGTH);
+      PBEKeySpec spec = new PBEKeySpec(password, SALT, ITERATIONS, KEY_LENGTH);
       SecretKey key = secretKeyFactory.generateSecret(spec);
 
       return key.getEncoded();
