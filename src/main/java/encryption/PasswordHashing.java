@@ -1,9 +1,10 @@
+package encryption;
+
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
-
-import org.apache.commons.codec.binary.Hex;
 
 /**
  * This class provides functionality for hashing passwords using the PBKDF2
@@ -14,22 +15,26 @@ import org.apache.commons.codec.binary.Hex;
  */
 public class PasswordHashing {
   private static final int ITERATIONS = 10000;
-  private static final int KEY_LENGTH = 512;
+  private static final int KEY_LENGTH = 256;
   private static final byte[] SALT = new byte[128];
+  private SecretKey key;
 
   public PasswordHashing() {
     SecureRandom secureRandom = new SecureRandom();
     secureRandom.nextBytes(SALT);
   }
 
+  public SecretKey getKey() {
+    return this.key;
+  }
+
   /**
    * Converts a provided password into a hashed representation.
    *
    * @param providedPassword the password to be hashed
-   * @return the hashed password as a hexadecimal string
    */
-  public String stringToHash(String providedPassword) {
-    return Hex.encodeHexString(hashPassword(providedPassword.toCharArray()));
+  public void stringToHash(String providedPassword) {
+    this.key = hashPassword(providedPassword.toCharArray());
   }
 
   /**
@@ -39,13 +44,12 @@ public class PasswordHashing {
    * @return the hashed password as a byte array
    * @throws RuntimeException if the hashing process encounters an error
    */
-  private byte[] hashPassword(final char[] password) {
+  private SecretKey hashPassword(final char[] password) {
     try {
-      SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+      SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
       PBEKeySpec spec = new PBEKeySpec(password, SALT, ITERATIONS, KEY_LENGTH);
-      SecretKey key = secretKeyFactory.generateSecret(spec);
-
-      return key.getEncoded();
+      byte[] keyBytes = secretKeyFactory.generateSecret(spec).getEncoded();
+      return new SecretKeySpec(keyBytes, "AES");
     } catch (Exception e) {
       throw new RuntimeException();
     }
