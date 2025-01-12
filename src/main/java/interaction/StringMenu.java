@@ -1,4 +1,4 @@
-package userInteraction;
+package interaction;
 
 public class StringMenu {
   public StringMenu() {

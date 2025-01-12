@@ -3,7 +3,7 @@ import java.io.File;
 public class ReadImage {
   private File imageInput;
 
-  ReadImage() {
+  public ReadImage() {
   }
 
   public void readFile(String filePath) {

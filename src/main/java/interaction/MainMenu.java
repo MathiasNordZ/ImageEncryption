@@ -1,14 +1,17 @@
-package userInteraction;
+package interaction;
 
+import utils.InputHandler;
 import utils.PrintHandler;
 
 public class MainMenu {
   private StringMenu stringMenu;
   private PrintHandler printHandler;
+  private InputHandler inputHandler;
 
   public MainMenu() {
     this.stringMenu = new StringMenu();
     this.printHandler = new PrintHandler();
+    this.inputHandler = new InputHandler();
   }
 
   private enum MainCommands {
@@ -40,9 +43,12 @@ public class MainMenu {
       int commandValue;
 
       try {
-        commandValue = inputHandler.intReader("Enter command: ");
+        inputHandler.readInt();
+        commandValue = inputHandler.getInt();
         command = MainCommands.fromValue(commandValue);
         commandHandler(command);
+      } catch (IllegalArgumentException e) {
+        System.out.println(e.getMessage());
       }
 
     } while (command != MainCommands.EXIT);
