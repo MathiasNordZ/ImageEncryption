@@ -1,17 +1,20 @@
-package interaction;
+package application.interaction;
 
-import utils.InputHandler;
-import utils.PrintHandler;
+import application.utils.InputHandler;
+import application.utils.PrintHandler;
 
 public class MainMenu {
-  private StringMenu stringMenu;
-  private PrintHandler printHandler;
-  private InputHandler inputHandler;
+  private final StringMenu stringMenu;
+  private final PrintHandler printHandler;
+  private final InputHandler inputHandler;
+  private final CommandHandler commandHandler;
+
 
   public MainMenu() {
     this.stringMenu = new StringMenu();
     this.printHandler = new PrintHandler();
     this.inputHandler = new InputHandler();
+    this.commandHandler = new CommandHandler();
   }
 
   private enum MainCommands {
@@ -56,7 +59,9 @@ public class MainMenu {
 
   private void commandHandler(MainCommands command) {
     switch (command) {
-      case ENCRYPT ->
+      case ENCRYPT -> commandHandler.encrypt();
+      case DECRYPT -> commandHandler.decrypt();
+      case EXIT -> System.out.println("Exiting program...");
     }
   }
 }

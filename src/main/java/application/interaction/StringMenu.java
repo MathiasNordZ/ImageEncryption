@@ -1,4 +1,4 @@
-package interaction;
+package application.interaction;
 
 public class StringMenu {
   public StringMenu() {
@@ -14,7 +14,10 @@ public class StringMenu {
         [0] - Exit
         
         ################################################
-        """;
+        
+        Please enter command:
+        """
+        ;
   }
 
 }

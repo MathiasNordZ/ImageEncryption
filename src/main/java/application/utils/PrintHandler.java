@@ -1,4 +1,4 @@
-package utils;
+package application.utils;
 
 public class PrintHandler {
   public PrintHandler() {

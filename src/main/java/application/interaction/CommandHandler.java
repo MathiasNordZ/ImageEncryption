@@ -1,26 +1,37 @@
-import encryption.Encryption;
-import encryption.PasswordHashing;
-import utils.InputHandler;
-import utils.PrintHandler;
+package application.interaction;
+
+import application.encryption.Encryption;
+import application.encryption.PasswordHashing;
+import application.utils.InputHandler;
+import application.utils.PrintHandler;
+import application.ReadImage;
 
 import javax.crypto.SecretKey;
 import java.io.File;
 
-public class Main {
-  public static void main(String[] args) {
-    PrintHandler printHandler = new PrintHandler();
-    ReadImage readImage = new ReadImage();
-    InputHandler inputHandler = new InputHandler();
-    PasswordHashing hashing = new PasswordHashing();
-    Encryption encryption = new Encryption();
+public class CommandHandler {
+  private final InputHandler inputHandler;
+  private final PrintHandler printHandler;
+  private final Encryption encryption;
+  private final PasswordHashing hashing;
+  private final ReadImage readImage;
 
+  public CommandHandler() {
+    this.inputHandler = new InputHandler();
+    this.printHandler = new PrintHandler();
+    this.encryption = new Encryption();
+    this.hashing = new PasswordHashing();
+    this.readImage = new ReadImage();
+  }
+
+  public void encrypt() {
     printHandler.printString("Please enter path of file to encrypt: ");
     inputHandler.readString();
     String inputPath = inputHandler.getString();
     readImage.readFile(inputPath);
     File inputFile = readImage.provideFile();
 
-    printHandler.printString("Please enter output path of encrypted file: ");
+    printHandler.printString("Please enter output path: ");
     inputHandler.readString();
     String outputPath = inputHandler.getString();
     File outputFile = new File(outputPath);
@@ -30,8 +41,10 @@ public class Main {
     String password = inputHandler.getString();
     hashing.stringToHash(password);
     SecretKey key = hashing.getKey();
-    encryption.encrypt(inputFile, outputFile, key);
+    encryption.encrypt(inputFile, key);
+  }
 
+  public void decrypt() {
     printHandler.printString("Please enter path of file to decrypt: ");
     inputHandler.readString();
     String decryptInputPath = inputHandler.getString();
@@ -47,6 +60,6 @@ public class Main {
     String decryptPassword = inputHandler.getString();
     hashing.stringToHash(decryptPassword);
     SecretKey decryptKey = hashing.getKey();
-    encryption.decrypt(decryptInputFile, decryptOutputFile, decryptKey);
+    encryption.decrypt(decryptInputFile, decryptKey);
   }
 }

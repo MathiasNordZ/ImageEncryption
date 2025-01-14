@@ -1,4 +1,4 @@
-package encryption;
+package application.encryption;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
