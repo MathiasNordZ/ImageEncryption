@@ -1,10 +1,10 @@
 package application.encryption;
 
+import java.security.SecureRandom;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.SecureRandom;
 
 /**
  * This class provides functionality for hashing passwords using the PBKDF2
@@ -19,6 +19,10 @@ public class PasswordHashing {
   private static final byte[] SALT = new byte[128];
   private SecretKey key;
 
+  /**
+   * Initializes a new instance of the PasswordHashing class.
+   * Generates a secure random salt for use in the password hashing process.
+   */
   public PasswordHashing() {
     SecureRandom secureRandom = new SecureRandom();
     secureRandom.nextBytes(SALT);

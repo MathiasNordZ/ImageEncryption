@@ -1,14 +1,17 @@
 package application.interaction;
 
+import application.ReadImage;
 import application.encryption.Encryption;
 import application.encryption.PasswordHashing;
 import application.utils.InputHandler;
 import application.utils.PrintHandler;
-import application.ReadImage;
-
-import javax.crypto.SecretKey;
 import java.io.File;
+import javax.crypto.SecretKey;
 
+/**
+ * The CommandHandler class manages user interactions for encrypting and decrypting files.
+ * It utilizes various utility classes to handle input, output, encryption, and hashing operations.
+ */
 public class CommandHandler {
   private final InputHandler inputHandler;
   private final PrintHandler printHandler;
@@ -16,6 +19,9 @@ public class CommandHandler {
   private final PasswordHashing hashing;
   private final ReadImage readImage;
 
+  /**
+   * Initializes the CommandHandler with necessary utility classes.
+   */
   public CommandHandler() {
     this.inputHandler = new InputHandler();
     this.printHandler = new PrintHandler();
@@ -24,6 +30,10 @@ public class CommandHandler {
     this.readImage = new ReadImage();
   }
 
+  /**
+   * Handles the process of encrypting a file.
+   * Prompts the user for the file path, output path, and password, then performs encryption.
+   */
   public void encrypt() {
     printHandler.printString("Please enter path of file to encrypt: ");
     inputHandler.readString();
@@ -44,6 +54,10 @@ public class CommandHandler {
     encryption.encrypt(inputFile, key);
   }
 
+  /**
+   * Handles the process of decrypting a file.
+   * Prompts the user for the file path, output path, and password, then performs decryption.
+   */
   public void decrypt() {
     printHandler.printString("Please enter path of file to decrypt: ");
     inputHandler.readString();
